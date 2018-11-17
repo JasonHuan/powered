@@ -44,6 +44,8 @@ INSTALLED_APPS = (
 
     # Powered Apps
     'profiles',
+    #'orders',
+    'categories',
     
 )
 
