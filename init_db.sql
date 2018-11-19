@@ -903,6 +903,9 @@ COPY categories_category (id, name, description, parent_id) FROM stdin;
 4	Cafe 1919		1
 5	Rendezvous		1
 6	The Study at Hedrick		1
+7	Emergency		\N
+8	Medicine		\N
+9	Toiletries		\N
 \.
 
 
@@ -989,6 +992,43 @@ COPY categories_orderitem (id, item_name, description, price, parent_category_id
 76	Belgian Waffles		6.00	4	3
 77	Odwalla		5.00	4	3
 78	Kombucha		5.00	4	3
+79	﻿Condoms		3.00	7	6
+80	Tampons		4.00	7	6
+81	Pads		9.00	7	6
+82	Razor (3 Pack)		10.00	7	6
+83	Chapstick		2.00	7	6
+84	Bandaids		2.00	7	6
+85	Pregnancy Tests		6.00	7	6
+86	Lube		5.00	7	6
+87	Solo Cups		3.00	7	6
+88	Tide Pods		5.00	7	6
+89	Stain Pen		5.00	7	6
+90	Toilet Paper		2.00	7	6
+91	Paper Towel		2.00	7	6
+92	﻿Advil 		2.00	8	6
+93	Ibuprofen		6.00	8	6
+94	Aspirin		5.00	8	6
+95	Tylenol		3.00	8	6
+96	Excedrin		2.00	8	6
+97	Alka-Seltzer		2.00	8	6
+98	NyQuil		10.00	8	6
+99	DayQuil		10.00	8	6
+100	Contac		10.00	8	6
+101	Sudafed		9.00	8	6
+102	TheraFlu		9.00	8	6
+103	Cold-eeze		7.00	8	6
+116	﻿Sun Screen 		12.00	9	6
+117	Mosquito Repellant		7.00	9	6
+118	Sandals		5.00	9	6
+119	Shampoo		7.00	9	6
+120	Conditioner		7.00	9	6
+121	Deodorant		6.00	9	6
+122	Vaseline 		2.00	9	6
+123	Baby Powder		3.00	9	6
+124	Moisturizing Lotion		14.00	9	6
+125	Ear Plugs 		4.00	9	6
+126	Cotton Swabs 		2.00	9	6
+127	Raid		5.00	9	6
 \.
 
 
@@ -1002,6 +1042,7 @@ COPY categories_orderplace (id, place_name, address) FROM stdin;
 3	Cafe 1919	330 De Neve Dr, Los Angeles, CA 90095
 4	The Study at Hedrick	250 De Neve Dr, Los Angeles, CA 90024
 5	Bruin Cafe	350 De Neve Dr, Los Angeles, CA 90095
+6	Hilltop Store	330 De Neve Dr, Los Angeles, CA 90024
 \.
 
 
@@ -1030,6 +1071,22 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 18	2018-11-17 01:01:45.329972+00	23	Vegetable Ramen Soup (Monday, Wednesday, Friday)	1	[{"added": {}}]	35	1
 19	2018-11-17 01:05:03.599408+00	4	test@test.com	3		12	1
 20	2018-11-17 01:05:14.752251+00	37	test@test.com	3		4	1
+21	2018-11-19 03:33:32.971698+00	7	Emergency	1	[{"added": {}}]	34	1
+22	2018-11-19 03:33:38.583328+00	8	Medicine	1	[{"added": {}}]	34	1
+23	2018-11-19 03:33:44.92122+00	9	Toiletries	1	[{"added": {}}]	34	1
+24	2018-11-19 03:34:26.926486+00	6	Hilltop Store	1	[{"added": {}}]	36	1
+25	2018-11-19 03:39:26.229301+00	115	Cold-eeze	3		35	1
+26	2018-11-19 03:39:26.233472+00	114	TheraFlu	3		35	1
+27	2018-11-19 03:39:26.237742+00	113	Sudafed	3		35	1
+28	2018-11-19 03:39:26.243333+00	112	Contac	3		35	1
+29	2018-11-19 03:39:26.249085+00	111	DayQuil	3		35	1
+30	2018-11-19 03:39:26.251816+00	110	NyQuil	3		35	1
+31	2018-11-19 03:39:26.255388+00	109	Alka-Seltzer	3		35	1
+32	2018-11-19 03:39:26.259241+00	108	Excedrin	3		35	1
+33	2018-11-19 03:39:26.262444+00	107	Tylenol	3		35	1
+34	2018-11-19 03:39:26.264662+00	106	Aspirin	3		35	1
+35	2018-11-19 03:39:26.268257+00	105	Ibuprofen	3		35	1
+36	2018-11-19 03:39:26.271552+00	104	﻿Advil 	3		35	1
 \.
 
 
@@ -1082,6 +1139,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 34	profiles	0001_initial	2018-11-10 00:19:52.437037+00
 35	categories	0001_initial	2018-11-17 00:07:57.876608+00
 36	categories	0002_auto_20181117_0010	2018-11-17 00:10:14.711953+00
+37	categories	0003_auto_20181117_0117	2018-11-17 01:17:18.149245+00
 \.
 
 
@@ -1103,6 +1161,9 @@ COPY oauth2_provider_accesstoken (id, token, expires, scope, application_id, use
 1	FKWBikmeleAgWJrcSjNCsFuYsGIofm	2018-11-10 10:14:33.411907+00	read write groups	1	1	2018-11-10 00:14:33.412419+00	2018-11-10 00:14:33.412435+00
 2	Ov0hSrh2LqeGDHrGyN4TkF5yBAYeol	2018-11-12 15:39:08.203393+00	read write groups	1	1	2018-11-12 05:39:08.203805+00	2018-11-12 05:39:08.20383+00
 3	ynZIhZp7aBBPVJiUqnJs58AlKN0x5z	2018-11-13 13:16:52.810671+00	read write groups	1	1	2018-11-13 03:16:52.811201+00	2018-11-13 03:16:52.811214+00
+7	zUU9OVk6crFzWHb7dEVxxrnBqgyRnk	2018-11-17 11:09:02.561435+00	read write groups	1	1	2018-11-17 01:09:02.562107+00	2018-11-17 01:09:02.562123+00
+8	jAn54Y7bI32aZSxoycrhTyI4aTiRoW	2018-11-19 08:46:52.369477+00	read write groups	1	1	2018-11-18 22:46:52.369991+00	2018-11-18 22:46:52.370004+00
+9	bYaIfXq29HmCaJHvWW2zPe42au5oZI	2018-11-19 13:37:43.011568+00	read write groups	1	1	2018-11-19 03:37:43.012005+00	2018-11-19 03:37:43.012025+00
 \.
 
 
@@ -1131,6 +1192,9 @@ COPY oauth2_provider_refreshtoken (id, token, access_token_id, application_id, u
 1	XlAuPPnXnuGVrWFzp9c7pyCIPUSNL0	1	1	1	2018-11-10 00:14:33.414633+00	2018-11-10 00:14:33.41466+00
 2	kkb6142UxhVdoSQByLCOyVT9EELQul	2	1	1	2018-11-12 05:39:08.20556+00	2018-11-12 05:39:08.205589+00
 3	wSkR07EiIbGcEvzhitZ0DVPzxpu9LE	3	1	1	2018-11-13 03:16:52.824456+00	2018-11-13 03:16:52.824477+00
+7	87zNeXaPe7oK5dRr3BO5UJDMhks9W0	7	1	1	2018-11-17 01:09:02.563597+00	2018-11-17 01:09:02.56362+00
+8	iX2EbttCcJrZAW0ExMArnMQSekiNO5	8	1	1	2018-11-18 22:46:52.379309+00	2018-11-18 22:46:52.37933+00
+9	GH5nxFomUxBFf4NbYbfakVeULndvH8	9	1	1	2018-11-19 03:37:43.014074+00	2018-11-19 03:37:43.014106+00
 \.
 
 
@@ -1189,28 +1253,28 @@ SELECT pg_catalog.setval('auth_user_user_permissions_id_seq', 1, false);
 -- Name: categories_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('categories_category_id_seq', 6, true);
+SELECT pg_catalog.setval('categories_category_id_seq', 9, true);
 
 
 --
 -- Name: categories_orderitem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('categories_orderitem_id_seq', 78, true);
+SELECT pg_catalog.setval('categories_orderitem_id_seq', 127, true);
 
 
 --
 -- Name: categories_orderplace_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('categories_orderplace_id_seq', 5, true);
+SELECT pg_catalog.setval('categories_orderplace_id_seq', 6, true);
 
 
 --
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_admin_log_id_seq', 20, true);
+SELECT pg_catalog.setval('django_admin_log_id_seq', 36, true);
 
 
 --
@@ -1224,14 +1288,14 @@ SELECT pg_catalog.setval('django_content_type_id_seq', 36, true);
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 36, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 37, true);
 
 
 --
 -- Name: oauth2_provider_accesstoken_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('oauth2_provider_accesstoken_id_seq', 6, true);
+SELECT pg_catalog.setval('oauth2_provider_accesstoken_id_seq', 9, true);
 
 
 --
@@ -1252,7 +1316,7 @@ SELECT pg_catalog.setval('oauth2_provider_grant_id_seq', 1, false);
 -- Name: oauth2_provider_refreshtoken_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('oauth2_provider_refreshtoken_id_seq', 6, true);
+SELECT pg_catalog.setval('oauth2_provider_refreshtoken_id_seq', 9, true);
 
 
 --

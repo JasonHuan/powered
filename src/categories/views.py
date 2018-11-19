@@ -47,8 +47,8 @@ class OrderPlaceViewSet(viewsets.ModelViewSet):
 
 
 class CategoryChildrenView(generics.ListAPIView):
-    serializer_class = CategorySerializer
-
+    data_type = "category"
+    permission_classes = tuple()
     def get_queryset(self, *args, **kwargs):
         parent_category_id = int(self.kwargs['category_id'])
 
@@ -64,8 +64,25 @@ class CategoryChildrenView(generics.ListAPIView):
         if child_categories.count() > 0:
             return child_categories
 
-        self.serializer_class = OrderItemSerializer
+        self.data_type = "order_item"
         return OrderItem.objects.filter(parent_category=parent_category)
+
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset(*args, **kwargs)
+        if self.data_type == "category":
+            serializer = CategorySerializer(queryset, many=True)
+        else:
+            serializer = OrderItemSerializer(queryset, many=True)
+
+        parent_category_id = int(self.kwargs['category_id'])
+        if parent_category_id == 0:
+            parent_category_name = "Home"
+        else:
+            parent_category_name = get_object_or_404(Category, id=parent_category_id).name
+
+        data = {"type": self.data_type, "parent": parent_category_name, self.data_type: serializer.data}
+        return Response(data)
 
 class CreateOrderItemView(generics.CreateAPIView):
 
