@@ -18,70 +18,78 @@ from django.conf import settings
 from django.db.models import Q
 
 from profiles.models import Profile
-from profiles.serializers import ProfileSerializer, UserSerializer
+from categories.models import OrderItem
+from .models import Order
+
+from .serializers import OrderSerializer
 
 
 
-class UserViewSet(viewsets.ModelViewSet):
+
+class OrderViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows orders to be viewed
     """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
+    queryset = Order.objects.all().order_by('order_time')
+    serializer_class = OrderSerializer
 
 
-class ProfileViewSet(viewsets.ModelViewSet):
+class CreateOrderView(generics.CreateAPIView):
     """
-    API endpoint that allows profiles to be viewed or edited.
-    """
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-
-
-class CreateUser(generics.CreateAPIView):
-    """
-    API endpoint that allows a user to be created.
+    API endpoint that allows an order to be created.
     """
     permission_classes = tuple()
-    
-    @transaction.atomic
+
     def post(self, request):
-        if User.objects.filter(email__iexact=request.data['email']).exists():
-            raise ValidationError({'error': 'Email already registered'})
 
-        new_user = User.objects.create_user(
-            username=request.data['email'],
-            email=request.data['email'],
-            password=request.data['password'],
-            first_name=request.data.get('first_name', ''),
-            last_name=request.data.get('last_name', ''),
-        )
+        #customer = get_object_or_404(Profile, user=self.request.user)
+
+        print(request.data)
+
+        #For now for Android app to work
+        cust_phone = request.data.get("customer_phone")
+        customer = get_object_or_404(Profile, phone=cust_phone)
+
+        address = request.data.get('delivery_address')
+
+        new_order = Order(
+            customer = customer,
+            delivery_address = address,
+            )
 
 
-        new_profile = Profile(
-            user=new_user,
-        )
+        items = request.data.get('items')
 
-        new_profile.save()
-        
-        return Response(ProfileSerializer(new_profile).data)
-        
 
-class ProfileView(generics.RetrieveAPIView):
-    """
-    View for getting profile data by profile id
-    """
+        new_order.save()
+
+        for item in items:
+            dict(item)
+            order_id = item['id']
+
+            new_order.items.add(get_object_or_404(OrderItem, id=order_id))
+
+        new_order.save()
+
+        return Response(OrderSerializer(new_order).data)
+
+
+    
+class OpenOrdersView(generics.ListAPIView):
+    serializer_class = OrderSerializer
+
     permission_classes = tuple()
-    serializer_class = ProfileSerializer
-    def get_object(self):
-        return get_object_or_404(Profile, id=int(self.kwargs['profile_id']))
 
+    def get_queryset(self):
+        return Order.objects.filter(order_status="OP")
 
-class OwnProfileView(generics.RetrieveUpdateDestroyAPIView):
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset(*args, **kwargs)
 
-    serializer_class = ProfileSerializer
-    def get_object(self):
-        return get_object_or_404(Profile, user=self.request.user)
+        serializer = OrderSerializer(queryset, many=True)
+
+        data = {"type": 'order', "orders": serializer.data}
+        return Response(data)
 
 
 

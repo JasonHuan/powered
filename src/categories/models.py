@@ -23,7 +23,8 @@ class OrderPlace(models.Model):
     place_name = models.CharField(max_length=50)
     address = models.CharField(max_length=100)
 
-    #Geo coordinates?
+    lat = models.DecimalField(max_digits=9, decimal_places=7)
+    lng = models.DecimalField(max_digits=10, decimal_places=7)
 
     #Picture of icon
 
