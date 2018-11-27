@@ -1,5 +1,8 @@
 # Powered
 
+## Additional info:
+## Google Maps API Key: AIzaSyCo1zSh6sh-Gu0bj-1797SGSnRoTTxe7iE
+
 ## Setup
 1. Install `docker` and `docker-compose`. 
 2. run `make build && make run` in the root directory (this one)
