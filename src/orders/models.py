@@ -6,7 +6,7 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
 from django.contrib.auth.models import User
-from users.models import Profile
+from profiles.models import Profile
 from categories.models import OrderItem
 
 from django.core.validators import RegexValidator
@@ -14,13 +14,14 @@ from django.core.validators import RegexValidator
 
 class Order(models.Model):
     #Customer is who it is being delivered to
-    customer = models.OneToOneField(Profile, on_delete=models.SET_NULL)
-    courier = models.OneToOneField(Profile, null=True, on_delete=models.SET_NULL)
+    customer = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL, related_name='customer')
+    courier = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.SET_NULL, related_name='courier')
+
     delivery_address = models.CharField(max_length=100)
 
-    #Geo coordinates of delivery address?
+    #geo coordinates of delivery address?
 
-    items = models.ManyToManyField(OrderItem, on_delete=models.SET_NULL)
+    items = models.ManyToManyField(OrderItem)
 
     delivery_fee = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
 
@@ -34,8 +35,7 @@ class Order(models.Model):
     completion_time = models.DateTimeField(null=True, blank=True)
 
 
-
     def __str__(self):
-        return str(self.customer) + " at " + str(order_time)
+        return str(self.customer) + " at " + str(self.order_time)
 
     

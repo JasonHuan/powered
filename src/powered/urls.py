@@ -16,8 +16,8 @@ urlpatterns = [
     url(r'^drf/', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'profiles/', include('profiles.urls', namespace='profiles')),
-    #url(r'orders/', include('orders.urls', namespace='orders')),
-    url(r'categories/', include('categories.urls', namespace='categories')),
+    url(r'^profiles/', include('profiles.urls', namespace='profiles')),
+    url(r'^orders/', include('orders.urls', namespace='orders')),
+    url(r'^categories/', include('categories.urls', namespace='categories')),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]
