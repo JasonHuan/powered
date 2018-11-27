@@ -51,10 +51,12 @@ class CreateOrderView(generics.CreateAPIView):
         customer = get_object_or_404(Profile, phone=cust_phone)
 
         address = request.data.get('delivery_address')
+        fee = request.data.get('fee', 0)
 
         new_order = Order(
             customer = customer,
             delivery_address = address,
+            delivery_fee = fee,
             )
 
 
