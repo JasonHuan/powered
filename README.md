@@ -20,7 +20,7 @@ Simplified tree diagram
     │   ├── keys.py  # put confidential info in here, like server or email keys
     │   ├── settings.py  # global settings (please keep confidential info out of here)
     │   ├── urls.py  # global URLs (usually imports app URLs too)
-    └── users  # One app for just users
+    └── <app_name>  # Same structure for all apps in project
         ├── admin.py  # sets up /admin pages
         ├── models.py  # contains class declarations and methods
         ├── serializers.py  # contains serializers for classes 
@@ -83,6 +83,56 @@ Simplified tree diagram
   "last_name": "<LASTNAME>"
   "email": "<EMAIL>"
   "phone": "<PHONE>"
+}
+```
+
+### Category Model
+```
+{
+  "id": <CATEGORY_ID>
+  "name": "<CATEGORY_NAME_STRING>""
+  "description": "<CATEGORY_DESC_STRING>"
+  "parent": <FOREIGN_KEY_TO_PARENT> #Not shown
+}
+```
+
+### OrderItem Model
+```
+{
+  "id": <ORDERITEM_ID>
+  "item_name": "<ITEM_NAME>"
+  "description": "<ITEM_DESCRIPTION>"
+  "price": <PRICE>
+  "place": <FOREIGN_KEY_TO_ORDER_PLACE> 
+  "parent_category": <FOREIGN_KEY_TO_PARENT_CATEGORY> #Not shown
+}
+```
+
+### OrderPlace Model
+```
+{
+  "id": <ORDERPLACE_ID>
+  "place_name": "<PLACE_NAME>"
+  "address": "<ADDRESS_STRING>"
+  "lat": <DECIMAL_LATITUDE>   #Format: xx.xxxxxxx
+  "lng": <DECIMAL_LONGITUDE>  #Format: xxx.xxxxxxx 
+}
+```
+
+### Order Model
+```
+{
+  "id": <ORDER_ID>
+  "customer": <FOREIGN_KEY_TO_CUSTOMER_PROFILE>
+  "courier": <FOREIGN_KEY_TO_COURIER_PROFILE>
+  "delivery_address": "<ADDRESS_STRING>"
+  "items": <LIST_OF_ORDERITEMS>
+  "delivery_fee": <DECIMAL> #Max 2 digits after decimal point
+  "order_status": <ORDER_STATUS_STRING> Options: "OP"=Open, "IP"=In Progress, "CL"=Closed
+  "courier_rating": <RATING_INTEGER>
+  "order_time": <AUTO_FILLED_TIMESTAMP>
+  "completion_time": <AUTO_FILLED_TIMESTAMP>
+}
 ```
 
 ## API
@@ -119,6 +169,32 @@ Simplified tree diagram
 
   returns updated Profile object
 
+### Get open orders
+  GET /orders/open/  
+  returns list of Order objects
 
+### View Order Categories or Items
+  GET /categories/view_children/<category_id>
+  returns 
+  ```
+    { 
+      "type": <"category" OR "order_item">
+      "parent": "<Name of parent category>"
+      <"category" OR "order_item">: <LIST OF CATEGORIES OR ORDER ITEMS>
+    }
+  ```
+
+### Make new order
+  POST /orders/new/  
+
+  ```
+      {
+          "delivery_address": "<ADDRESS_STRING>"
+          "items": <LIST_OF_ORDERITEMS>
+          "fee": <DECIMAL> #Max 2 digits after decimal point
+      }
+  ```
+
+  returns new Order object
 
 

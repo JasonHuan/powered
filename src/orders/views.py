@@ -42,13 +42,13 @@ class CreateOrderView(generics.CreateAPIView):
 
     def post(self, request):
 
-        #customer = get_object_or_404(Profile, user=self.request.user)
+        customer = get_object_or_404(Profile, user=self.request.user)
 
         print(request.data)
 
-        #For now for Android app to work
-        cust_phone = request.data.get("customer_phone")
-        customer = get_object_or_404(Profile, phone=cust_phone)
+        # #For now for Android app to work
+        # cust_phone = request.data.get("customer_phone")
+        # customer = get_object_or_404(Profile, phone=cust_phone)
 
         address = request.data.get('delivery_address')
         fee = request.data.get('fee', 0)
