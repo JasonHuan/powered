@@ -11,5 +11,9 @@ from . import models
 class OrderAdmin(admin.ModelAdmin):
     pass
 
+@admin.register(models.OrderFeeAction)
+class OrderFeeActionAdmin(admin.ModelAdmin):
+    pass
+
 
 

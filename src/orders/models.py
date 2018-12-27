@@ -23,7 +23,9 @@ class Order(models.Model):
 
     items = models.ManyToManyField(OrderItem)
 
-    delivery_fee = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    initial_delivery_fee = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+    final_delivery_fee = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+
 
     #Order status: OP=open, IP=In progress, CL=closed
     order_status = models.CharField(max_length=2, default="OP")
@@ -32,10 +34,30 @@ class Order(models.Model):
     courier_rating = models.IntegerField(null=True, blank=True)
 
     order_time = models.DateTimeField(auto_now_add=True)
+    acceptance_time = models.DateTimeField(null=True, blank=True)
     completion_time = models.DateTimeField(null=True, blank=True)
 
 
     def __str__(self):
         return str(self.customer) + " at " + str(self.order_time)
+
+
+class OrderFeeAction(models.Model):
+
+    user = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL)
+    amount = models.DecimalField(max_digits=6, decimal_places=2)
+    was_counter_offer = models.BooleanField()
+    is_final_fee = models.BooleanField(default = False)
+
+    for_order = models.ForeignKey(Order)
+
+    offer_made_time = models.DateTimeField(auto_now_add=True)
+
+    #Accept time is only for counter offers, and is the time that the customer accepted it
+    offer_accept_time = models.DateTimeField(null=True, blank=True)
+
+
+    def __str__(self):
+        return str(self.user) + " for " + str(self.for_order)
 
     

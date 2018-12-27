@@ -71,7 +71,6 @@ class ProfileView(generics.RetrieveAPIView):
     """
     View for getting profile data by profile id
     """
-    permission_classes = tuple()
     serializer_class = ProfileSerializer
     def get_object(self):
         return get_object_or_404(Profile, id=int(self.kwargs['profile_id']))
