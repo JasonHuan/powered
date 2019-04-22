@@ -1,4 +1,4 @@
-FROM python:3-slim
+FROM python:3.6-alpine
 
 # Enable production settings by default; for development, this can be set to 
 # `false` in `docker run --env`
@@ -18,12 +18,18 @@ ENV DEBIAN_FRONTEND noninteractive
 #    libmysqlclient-dev \
 #    mysql-server \
 #    nginx \
-#    python-dev \
+#   python-dev \
 #    python-mysqldb \
 #    python-setuptools \
 #    supervisor \
 #    vim \
 #    curl
+
+RUN apk update && \
+    apk add --no-cache python3 && \
+    apk add --virtual build-deps gcc python-dev musl-dev && \
+    apk add postgresql-dev
+
 #RUN easy_install pip
 
 # Handle urllib3 InsecurePlatformWarning

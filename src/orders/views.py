@@ -52,9 +52,12 @@ class CreateOrderView(generics.CreateAPIView):
 
         address = request.data.get('delivery_address')
 
+        fee = request.data.get('fee', 0)
+
         new_order = Order(
             customer = customer,
             delivery_address = address,
+            delivery_fee = fee,
             )
 
 

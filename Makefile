@@ -30,7 +30,7 @@ clean_db:
 
 init_db: clean_db 
 	cat init_db.sql | docker exec -i `docker ps -q --filter status=running --filter ancestor=postgres:10.1-alpine` psql -U postgres 
-	docker exec -i -t `docker ps -q --filter status=running --filter ancestor=powered/backend:latest` /bin/bash -c "cd /code/src && ./manage.py migrate"
+	docker exec -i -t `docker ps -q --filter status=running --filter ancestor=powered/backend:latest` /bin/sh -c "cd /code/src && ./manage.py migrate"
 
 restore-db:
 
